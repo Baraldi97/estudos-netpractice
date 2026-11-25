@@ -105,7 +105,7 @@ def duracao(mp3):
 
 def conferir_duracao(nome, texto, seg):
     n = len(re.findall(r"\w+", texto))
-    if not seg:
+    if not seg or n < 8:
         return
     taxa = n / seg
     ok = PALAVRAS_POR_SEG[0] <= taxa <= PALAVRAS_POR_SEG[1]

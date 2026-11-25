@@ -98,32 +98,6 @@
       ls("set", "np-tema", novo);
     });
 
-    // ---------- Carregamento ----------
-    var api = {
-      irPara: irPara, tocar: tocar_, pausar: pausar,
-      get cena() { return cenas[idx] && cenas[idx].dados; },
-      get resultados() { return resultados; }
-    };
-    function carregarJSON(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
-    return carregarJSON(op.roteiro).then(function (r) {
-      roteiro = r;
-      chave = "np-aula-" + (roteiro.id || location.pathname);
-      resultados = ls("get", chave + "-paradas") || {};
-      return carregarJSON(op.cues).catch(function () { return { cenas: {} }; });
-    }).then(function (c) {
-      cues = c || { cenas: {} };
-      montarCenas();
-      montarTranscricao();
-      montarPainel();
-      var salvo = ls("get", chave + "-pos");
-      irPara(salvo && salvo.cena < cenas.length ? salvo.cena : 0, salvo ? salvo.t : 0, false);
-      if (!salvo) mostrarLegendaInicial();
-      atualizarCC();
-      return api;
-    }).catch(function (e) {
-      palco.innerHTML = "<p class='erro'>Não consegui carregar a aula (" + e.message + "). Abra pelo GitHub Pages ou por um servidor local.</p>";
-    });
-
     function montarCenas() {
       var acc = 0;
       roteiro.cenas.forEach(function (c, i) {
@@ -229,6 +203,7 @@
       if (emParada) return;
       var c = cenas[idx];
       setTocando(true);
+      if (modoAtual === "relogio" && !c.temAudio && g.NP && g.NP.Voice && g.NP.Voice.disponivel) modoAtual = "voz";
       if (modoAtual === "mp3") {
         audio.playbackRate = velocidade;
         var pr = audio.play();
@@ -445,6 +420,32 @@
       op.painel.querySelector("#np-zerar").addEventListener("click", function () { resultados = {}; salvarResultados(); montarPainel(); });
     }
 
+
+    // ---------- Carregamento ----------
+    var api = {
+      irPara: irPara, tocar: tocar_, pausar: pausar,
+      get cena() { return cenas[idx] && cenas[idx].dados; },
+      get resultados() { return resultados; }
+    };
+    function carregarJSON(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+    return carregarJSON(op.roteiro).then(function (r) {
+      roteiro = r;
+      chave = "np-aula-" + (roteiro.id || location.pathname);
+      resultados = ls("get", chave + "-paradas") || {};
+      return carregarJSON(op.cues).catch(function () { return { cenas: {} }; });
+    }).then(function (c) {
+      cues = c || { cenas: {} };
+      montarCenas();
+      montarTranscricao();
+      montarPainel();
+      var salvo = ls("get", chave + "-pos");
+      irPara(salvo && salvo.cena < cenas.length ? salvo.cena : 0, salvo ? salvo.t : 0, false);
+      if (!salvo) mostrarLegendaInicial();
+      atualizarCC();
+      return api;
+    }).catch(function (e) {
+      palco.innerHTML = "<p class='erro'>Não consegui carregar a aula (" + e.message + "). Abra pelo GitHub Pages ou por um servidor local.</p>";
+    });
   }
 
   g.NP = g.NP || {};

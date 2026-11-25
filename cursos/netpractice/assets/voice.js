@@ -61,7 +61,7 @@
 
   g.NP = g.NP || {};
   g.NP.Voice = {
-    disponivel: !!synth,
+    get disponivel() { return !!synth && synth.getVoices().length > 0; },
     falar: falar,
     nomeDaVoz: function () { var v = vozEscolhida || escolherVoz(); return v ? v.name : null; }
   };
