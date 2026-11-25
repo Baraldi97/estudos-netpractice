@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabela de máscaras</title>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  table.dados td, table.dados th { padding: .2rem .9rem; }
+  tr.fora td { color: var(--muted); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+  @media print { main { padding: 0; } h1 { font-size: 16pt; } table.dados { font-size: 9pt; } }
+</style>
+</head>
+<body>
+<main>
+  <nav class="topo"><a href="../../../index.html">NetPractice · início</a><span>Referência · Aula 0002</span></nav>
+  <h1>Tabela de máscaras</h1>
+  <p class="sub">/n, máscara em decimal e bits de host. Gerada e conferida com o módulo ipaddress do Python.</p>
+  <div class="cols">
+    <div>
+      <h2>Como reconstruir sem a tabela</h2>
+      <p><strong>Escada</strong> (uns juntos à esquerda): 1 = 128, 2 = 192, 3 = 224, 4 = 240, 5 = 248, 6 = 252, 7 = 254, 8 = 255. Cada degrau soma o próximo peso.</p>
+      <p><strong>/n para decimal:</strong> n ÷ 8. O quociente diz quantos octetos 255, o resto diz o degrau do octeto seguinte, e o que sobra é 0.<br><span class="mono">/27 = 3 × 8 + 3 → 255.255.255.224</span></p>
+      <p><strong>Decimal para /n:</strong> cada 255 vale 8, cada degrau vale a sua posição.<br><span class="mono">255.255.192.0 → 8 + 8 + 2 + 0 = /18</span></p>
+      <p><strong>Bits de host</strong> = 32 − n.</p>
+      <p><strong>Inválidas:</strong> qualquer máscara com um 1 depois de um 0 (por exemplo 255.255.0.255, ou um octeto fora da escada como 250). No NetPractice, /31 e /32 não deixam IP utilizável numa interface: o máximo é /30.</p>
+      <p class="nota">Fontes: RFC 4632, seção 3.1 (notação /n); RFC 950, seção 2.1 (máscara).</p>
+    </div>
+    <div>
+      <table class="dados">
+        <tr><th>/n</th><th>máscara</th><th>bits de host</th><th></th></tr>
+<tr><td>/0</td><td>0.0.0.0</td><td>32</td><td class='nota'></td></tr>
+<tr><td>/1</td><td>128.0.0.0</td><td>31</td><td class='nota'></td></tr>
+<tr><td>/2</td><td>192.0.0.0</td><td>30</td><td class='nota'></td></tr>
+<tr><td>/3</td><td>224.0.0.0</td><td>29</td><td class='nota'></td></tr>
+<tr><td>/4</td><td>240.0.0.0</td><td>28</td><td class='nota'></td></tr>
+<tr><td>/5</td><td>248.0.0.0</td><td>27</td><td class='nota'></td></tr>
+<tr><td>/6</td><td>252.0.0.0</td><td>26</td><td class='nota'></td></tr>
+<tr><td>/7</td><td>254.0.0.0</td><td>25</td><td class='nota'></td></tr>
+<tr><td>/8</td><td>255.0.0.0</td><td>24</td><td class='nota'></td></tr>
+<tr><td>/9</td><td>255.128.0.0</td><td>23</td><td class='nota'></td></tr>
+<tr><td>/10</td><td>255.192.0.0</td><td>22</td><td class='nota'></td></tr>
+<tr><td>/11</td><td>255.224.0.0</td><td>21</td><td class='nota'></td></tr>
+<tr><td>/12</td><td>255.240.0.0</td><td>20</td><td class='nota'></td></tr>
+<tr><td>/13</td><td>255.248.0.0</td><td>19</td><td class='nota'></td></tr>
+<tr><td>/14</td><td>255.252.0.0</td><td>18</td><td class='nota'></td></tr>
+<tr><td>/15</td><td>255.254.0.0</td><td>17</td><td class='nota'></td></tr>
+<tr><td>/16</td><td>255.255.0.0</td><td>16</td><td class='nota'></td></tr>
+<tr><td>/17</td><td>255.255.128.0</td><td>15</td><td class='nota'></td></tr>
+<tr><td>/18</td><td>255.255.192.0</td><td>14</td><td class='nota'></td></tr>
+<tr><td>/19</td><td>255.255.224.0</td><td>13</td><td class='nota'></td></tr>
+<tr><td>/20</td><td>255.255.240.0</td><td>12</td><td class='nota'></td></tr>
+<tr><td>/21</td><td>255.255.248.0</td><td>11</td><td class='nota'></td></tr>
+<tr><td>/22</td><td>255.255.252.0</td><td>10</td><td class='nota'></td></tr>
+<tr><td>/23</td><td>255.255.254.0</td><td>9</td><td class='nota'></td></tr>
+<tr><td>/24</td><td>255.255.255.0</td><td>8</td><td class='nota'></td></tr>
+<tr><td>/25</td><td>255.255.255.128</td><td>7</td><td class='nota'></td></tr>
+<tr><td>/26</td><td>255.255.255.192</td><td>6</td><td class='nota'></td></tr>
+<tr><td>/27</td><td>255.255.255.224</td><td>5</td><td class='nota'></td></tr>
+<tr><td>/28</td><td>255.255.255.240</td><td>4</td><td class='nota'></td></tr>
+<tr><td>/29</td><td>255.255.255.248</td><td>3</td><td class='nota'></td></tr>
+<tr><td>/30</td><td>255.255.255.252</td><td>2</td><td class='nota'></td></tr>
+<tr class='fora'><td>/31</td><td>255.255.255.254</td><td>1</td><td class='nota'>não serve em interface</td></tr>
+<tr class='fora'><td>/32</td><td>255.255.255.255</td><td>0</td><td class='nota'>não serve em interface</td></tr>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

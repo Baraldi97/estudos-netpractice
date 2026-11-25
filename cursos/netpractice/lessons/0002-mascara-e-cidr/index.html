@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 0002: Máscara e CIDR</title>
+<meta name="description" content="NetPractice, Aula 0002: ler a máscara em bits e traduzir entre /n e decimal de cabeça.">
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  .duas { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; }
+  @media (max-width: 560px) { .duas { grid-template-columns: 1fr; } }
+  .itf-card { border: 1px solid var(--rule); border-radius: 4px; padding: .6rem .8rem; font-family: var(--mono); }
+  .itf-card .nota { font-family: var(--serif); margin: 0 0 .3rem; }
+  .itf-card .campo { display: grid; grid-template-columns: 3.2rem 1fr; gap: .4rem; }
+  .igual { font-size: 2rem; text-align: center; }
+  .contas { font-family: var(--mono); font-size: 1.1rem; display: grid; gap: .6rem; }
+  .contas .nota { font-family: var(--serif); }
+  .escada-mini { font-family: var(--mono); font-size: .85rem; color: var(--muted); margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: .2rem .9rem; }
+  .grande { font-family: var(--mono); font-size: 1.3rem; }
+  .riscado { color: var(--erro); text-decoration: line-through; }
+  .erro-msg { font-family: var(--mono); color: var(--erro); }
+  .bloco { margin: .4rem 0 1rem; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="topo"><a href="../../../../index.html">NetPractice · início</a><span>Aula 0002 · cerca de 4 min</span></nav>
+  <h1>Máscara e CIDR</h1>
+  <p class="sub">Ler a máscara em bits e traduzir entre /n e decimal de cabeça.</p>
+  <p class="legenda-cores">Cores fixas do curso: <span class="r">azul = bit de rede</span>, <span class="h">laranja = bit de host</span>.</p>
+
+  <section class="player" id="player" aria-label="Videoaula"></section>
+  <p class="nota">Atalhos: espaço toca ou pausa, setas trocam de cena, C liga e desliga a legenda.</p>
+
+  <h2>Seu resultado</h2>
+  <section class="painel" id="painel"></section>
+
+  <h2>Fechamento</h2>
+  <ol class="resumo">
+    <li>A máscara tem 32 bits alinhados com o IP: 1 marca bit de rede, 0 marca bit de host, e todos os uns vêm antes de todos os zeros.</li>
+    <li>/n conta os uns da máscara. Bits de host = 32 − n.</li>
+    <li>/n para decimal: n ÷ 8 dá quantos 255, o resto dá o degrau da escada, o resto é zero. Na volta, cada 255 vale 8 e cada degrau vale a sua posição. Numa interface do NetPractice, o máximo é /30.</li>
+  </ol>
+
+  <div class="cartao">
+    <h3>Desafio</h3>
+    <p>De cabeça, sem olhar a tabela. Meta: menos de 1 minuto.</p>
+    <p class="mono">/19 → ? &nbsp;·&nbsp; /30 → ? &nbsp;·&nbsp; /12 → ? &nbsp;·&nbsp; 255.255.255.240 → ? &nbsp;·&nbsp; 255.224.0.0 → ?</p>
+    <details><summary>Respostas</summary>
+      <p class="mono">255.255.224.0 · 255.255.255.252 · 255.240.0.0 · /28 · /11</p>
+    </details>
+  </div>
+
+  <h3>Referência para imprimir</h3>
+  <p><a href="../../reference/mascaras.html">Tabela de máscaras: /n, decimal e bits de host</a>. É a tabela que você lembrava, mas use-a para conferir, não para consultar: na defesa ela não estará lá.</p>
+
+  <h3>Fonte primária</h3>
+  <p><a href="https://www.rfc-editor.org/rfc/rfc4632#section-3.1">RFC 4632, seção 3.1 (Basic Concept and Prefix Notation)</a>: define a notação /n. Para a origem da máscara, <a href="https://www.rfc-editor.org/rfc/rfc950">RFC 950, seção 2.1</a> (p. 4 a 6). Curiosidade que explica a regra de forma: a RFC 950 ainda permitia máscara com bits de sub-rede separados e só <em>recomendava</em> que fossem contíguos; a notação /n do CIDR só consegue expressar máscaras contíguas, e é essa regra que o NetPractice cobra.</p>
+
+  <h3>Links</h3>
+  <ul>
+    <li>Anterior: <a href="../0001-binario-e-ipv4/">Aula 0001, binário e IPv4</a></li>
+    <li>Próxima: Aula 0003, endereço de rede, broadcast e faixa utilizável <span class="nota">(em preparação)</span></li>
+    <li><a href="../../../../index.html">Todas as aulas</a></li>
+  </ul>
+  <p class="nota">Ficou alguma dúvida? Me pergunte no chat do projeto. Posso explicar de outro jeito ou montar mais exercícios.</p>
+
+  <h2>Transcrição</h2>
+  <section class="transcricao" id="transcricao"></section>
+</main>
+
+<script src="../../assets/netsim.js"></script>
+<script src="../../assets/bits.js"></script>
+<script src="../../assets/voice.js"></script>
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/player.js"></script>
+<script>
+(function () {
+  "use strict";
+  var B = NP.Bits;
+  function $(id) { return document.getElementById(id); }
+  function liga(id, v) { $(id).classList.toggle("on", v); }
+  var ESCADA = "<div class='escada-mini'><span>degraus:</span><span>1 = 128</span><span>2 = 192</span><span>3 = 224</span><span>4 = 240</span><span>5 = 248</span><span>6 = 252</span><span>7 = 254</span><span>8 = 255</span></div>";
+
+  var visuais = {
+    "cena-01": {
+      montar: function (el) {
+        el.innerHTML = "<div class='duas'>" +
+          "<div class='itf-card'><p class='nota'>interface da esquerda</p><div class='campo'><span>IP</span><span>10.14.3.77</span></div>" +
+          "<div class='campo aparece' id='c1m1'><span>Mask</span><span>255.255.255.224</span></div></div>" +
+          "<div class='igual aparece' id='c1eq'>=</div>" +
+          "<div class='itf-card'><p class='nota'>interface vizinha</p><div class='campo'><span>IP</span><span>10.14.3.66</span></div>" +
+          "<div class='campo aparece' id='c1m2'><span>Mask</span><span>/27</span></div></div></div>";
+      },
+      passo: function (n) { liga("c1m1", n >= 1); liga("c1m2", n >= 2); liga("c1eq", n >= 3); }
+    },
+    "cena-02": {
+      montar: function (el) { el.innerHTML = "<div id='c2v'></div><p class='nota aparece' id='c2n' style='margin-top:1rem'></p>"; },
+      passo: function (n) {
+        $("c2v").innerHTML = B.colunas("10.14.3.77", 27, {
+          rotulos: true, mascara: n >= 1, cores: n >= 2, coresMascara: n >= 4, decMascara: n >= 5, decIp: true
+        });
+        var nota = $("c2n");
+        if (n >= 4) nota.innerHTML = "Máscara: todos os uns juntos à esquerda, todos os zeros juntos à direita.";
+        else if (n >= 3) nota.innerHTML = "<span class='r'>azul</span>: bit de rede (máscara 1). <span class='h'>laranja</span>: bit de host (máscara 0).";
+        nota.classList.toggle("on", n >= 3);
+      }
+    },
+    "cena-03": {
+      montar: function (el) { el.innerHTML = "<div id='c3v'></div><p class='grande bloco' id='c3t'></p>"; },
+      passo: function (n) {
+        var v = $("c3v"), t = $("c3t");
+        if (n < 4) {
+          v.innerHTML = B.colunas(null, 27, { coresMascara: n >= 1, decMascara: false });
+          t.innerHTML = n >= 3 ? "<span class='r'>27 uns</span> + <span class='h'>32 − 27 = 5 zeros</span> → /27"
+            : n >= 2 ? "<span class='r'>27 bits de rede</span> → /27" : n >= 1 ? "contando os uns: 27" : "";
+        } else {
+          v.innerHTML = B.colunas("10.14.3.77", 24, { rotulos: true, cores: true, coresMascara: true, decMascara: true, decIp: true });
+          t.innerHTML = n >= 5 ? "/24: rede <span class='r'>10.14.3</span> · host <span class='h'>77</span>" : "/24 = 255.255.255.0";
+        }
+      }
+    },
+    "cena-04": {
+      montar: function (el) {
+        el.innerHTML = ESCADA + "<div class='contas'>" +
+          "<div class='aparece' id='c4a'><span class='nota'>/n → n ÷ 8: quociente = quantos 255, resto = degrau, depois zeros</span></div>" +
+          "<div class='aparece' id='c4b'>/27 → 27 = 3 × 8 + 3 → 255.255.255.224</div>" +
+          "<div class='aparece' id='c4c'>/20 → 20 = 2 × 8 + 4 → 255.255.240.0</div>" +
+          "<div class='aparece' id='c4d'><span class='nota'>volta: cada 255 vale 8, cada degrau vale a sua posição</span></div>" +
+          "<div class='aparece' id='c4e'>255.255.192.0 → 8 + 8 + 2 + 0 = /18</div></div>";
+      },
+      passo: function (n) { ["c4a", "c4b", "c4c", "c4d", "c4e"].forEach(function (id, i) { liga(id, n >= i + 1); }); }
+    },
+    "cena-05": {
+      montar: function (el) {
+        var ruim = "11111111111111110000000011111111";
+        el.innerHTML =
+          "<div class='aparece bloco' id='c5a'><p class='grande' style='margin:0 0 .4rem'>255.255.0.255</p>" +
+          B.colunas(null, 0, { mascaraBits: ruim, marcar: function (i) { return i >= 24 ? "alerta" : ""; } }) + "</div>" +
+          "<p class='aparece erro-msg' id='c5b'>invalid netmask</p>" +
+          "<div class='aparece bloco' id='c5c'><p class='grande' style='margin:0 0 .4rem'>250</p><div class='bits'>" +
+          B.octeto("11111010", { classe: function (i, b) { return (i === 5 || i === 6 ? "alerta " : "") + (b === "1" ? "um" : "zero"); } }) + "</div></div>" +
+          "<p class='aparece grande' id='c5d'><span class='riscado'>/31</span> 1 bit de host · <span class='riscado'>/32</span> 0 bits de host</p>" +
+          "<p class='aparece grande' id='c5e'>máximo numa interface: /30</p>";
+      },
+      passo: function (n) { ["c5a", "c5b", "c5c", "c5d", "c5e"].forEach(function (id, i) { liga(id, n >= i + 1); }); }
+    },
+    "cena-06": {
+      montar: function (el) {
+        el.innerHTML = "<ol class='resumo'>" +
+          "<li class='aparece' id='c6a'>máscara: <span class='r'>uns = rede</span>, <span class='h'>zeros = host</span>, uns sempre à esquerda</li>" +
+          "<li class='aparece' id='c6b'>/n conta os uns; bits de host = 32 − n</li>" +
+          "<li class='aparece' id='c6c'>n ÷ 8 → quantos 255 + um degrau + zeros</li></ol>";
+      },
+      passo: function (n) { ["c6a", "c6b", "c6c"].forEach(function (id, i) { liga(id, n >= i + 1); }); }
+    }
+  };
+
+  NP.Player.iniciar({
+    raiz: $("player"), roteiro: "roteiro.json", cues: "cues.json", visuais: visuais,
+    transcricao: $("transcricao"), painel: $("painel")
+  }).then(function (api) { window.NPAula = api; });
+})();
+</script>
+</body>
+</html>

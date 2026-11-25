@@ -22,6 +22,7 @@ A defesa sorteia 3 níveis entre 6 e 10 (aba Evaluation da interface), com 15 mi
 
 ## Aulas prontas e o que destravam
 - Aula 0001, binário e IPv4 (`lessons/0001-binario-e-ipv4/`): base para todos os níveis; sozinha não resolve nenhum. Junto com as aulas 2 a 4, destrava os níveis 1 e 2.
+- Aula 0002, máscara e CIDR (`lessons/0002-mascara-e-cidr/`): ler a máscara do nível 2 em diante e reconhecer máscara inválida. Referência: `reference/mascaras.html`.
 
 ## Níveis resolvidos sozinho
 _(registrar aqui só com evidência: nível, data, tempo, se precisou de ajuda)_

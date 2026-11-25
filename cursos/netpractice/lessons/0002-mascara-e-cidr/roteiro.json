@@ -1,0 +1,128 @@
+{
+ "id": "0002-mascara-e-cidr",
+ "numero": "0002",
+ "titulo": "Máscara e CIDR: ler e traduzir a máscara",
+ "voz": "pt-BR-FranciscaNeural",
+ "rate": "+0%",
+ "fechamento": {
+  "seguir": "Você acertou todas as paradas de primeira. Próxima: Aula 0003, endereço de rede, broadcast e faixa utilizável.",
+  "reforcar": "Alguma parada exigiu segunda tentativa. Antes da Aula 0003, refaça as cenas 3 e 4 e converta de cabeça cinco linhas da tabela de referência."
+ },
+ "cenas": [
+  {
+   "id": "cena-01",
+   "titulo": "Dois jeitos de escrever a mesma coisa",
+   "narracao": "Num nível do NetPractice, uma interface mostra o IP dez ponto quatorze ponto três ponto setenta e sete. No campo Mask aparece duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto duzentos e vinte e quatro. Na interface vizinha, o campo Mask mostra só barra vinte e sete. São a mesma máscara, escrita de dois jeitos. Na defesa, você vai precisar traduzir de um para o outro em segundos, e entender o que cada um diz sobre o endereço. É o assunto desta aula.",
+   "visual": {
+    "descricao": "Duas interfaces inventadas: uma com a máscara em decimal, outra com /27. Na fala 'a mesma máscara', aparece um sinal de igual entre elas.",
+    "passos": ["No campo Mask", "barra vinte e sete", "a mesma máscara"]
+   },
+   "paradas": []
+  },
+  {
+   "id": "cena-02",
+   "titulo": "A máscara corta o endereço em dois",
+   "narracao": "A máscara também tem trinta e dois bits, alinhados com os trinta e dois bits do IP. Onde a máscara tem um, o bit do IP faz parte da rede. Onde a máscara tem zero, o bit do IP identifica a máquina dentro da rede, o host. Quem formalizou isso foi a RFC novecentos e cinquenta, que criou as sub-redes. Repare na regra de forma: os uns vêm todos juntos, à esquerda, e os zeros todos juntos, à direita. Eles nunca se alternam. Por isso cada octeto de uma máscara é um degrau da escada que você viu na aula passada, ou então zero.",
+   "visual": {
+    "descricao": "Cada octeto em coluna: bits do IP em cima, bits da máscara embaixo. Os bits do IP ganham a cor de rede onde a máscara tem 1 e a cor de host onde tem 0. No fim, o decimal da máscara embaixo de cada coluna.",
+    "passos": ["também tem trinta e dois bits", "faz parte da rede", "o host", "os uns vêm todos juntos", "um degrau da escada"]
+   },
+   "paradas": [
+    {
+     "id": "p1-revisao-octeto",
+     "resumo": "Octeto 11101000 em decimal (revisão da Aula 0001)",
+     "tipo": "campos",
+     "pergunta": "Quanto vale o octeto <code>11101000</code> em decimal?",
+     "campos": [{"rotulo": "Decimal", "resposta": "232", "tipo": "numero"}],
+     "explicacao": "Bits 1 nos pesos 128, 64, 32 e 8: 128 + 64 + 32 + 8 = 232. Repare que ele não é um degrau da escada: tem um zero no meio dos uns, então nunca seria octeto de máscara.",
+     "dica": "Régua 128 64 32 16 8 4 2 1 em cima dos bits; some só onde há 1. Se travar, a Aula 0001 tem a cena dos pesos.",
+     "cena": "cena-02"
+    }
+   ]
+  },
+  {
+   "id": "cena-03",
+   "titulo": "O que a barra conta",
+   "narracao": "Agora a notação curta. Conte os uns da máscara: o número que você obtém é o que vem depois da barra. Barra vinte e sete quer dizer vinte e sete bits de rede, contados da esquerda. Sobram cinco bits de host, porque trinta e dois menos vinte e sete dá cinco. Essa notação se chama CIDR, de Classless Inter-Domain Routing, e está na RFC quatro mil seiscentos e trinta e dois. Volte ao barra vinte e quatro da nossa conversa: são vinte e quatro uns, ou seja, três octetos inteiros de uns. Duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto zero. Os três primeiros octetos do IP dizem a rede, e o último diz o host.",
+   "visual": {
+    "descricao": "A máscara /27 com a contagem dos uns e dos zeros; depois a máscara /24 com os três primeiros octetos de rede e o último de host.",
+    "passos": ["Conte os uns", "vinte e sete bits de rede", "Sobram cinco bits de host", "Volte ao barra vinte e quatro", "Os três primeiros octetos"]
+   },
+   "paradas": []
+  },
+  {
+   "id": "cena-04",
+   "titulo": "Da barra para o decimal, de cabeça",
+   "narracao": "Para converter barra n em decimal, divida n por oito. O quociente diz quantos octetos valem duzentos e cinquenta e cinco. O resto diz qual degrau da escada vem em seguida. Depois, só zeros. Barra vinte e sete: vinte e sete dividido por oito dá três, com resto três. Três octetos duzentos e cinquenta e cinco, e o terceiro degrau, que é duzentos e vinte e quatro. Barra vinte: dois octetos duzentos e cinquenta e cinco, resto quatro, o quarto degrau, duzentos e quarenta, e um zero no fim. No caminho contrário, some: cada duzentos e cinquenta e cinco vale oito, e cada degrau vale a sua posição na escada. Duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto cento e noventa e dois ponto zero dá oito, mais oito, mais dois. Barra dezoito.",
+   "visual": {
+    "descricao": "As contas aparecem linha a linha: 27 = 3 × 8 + 3, depois 20 = 2 × 8 + 4, depois a volta 255.255.192.0 = 8 + 8 + 2 + 0.",
+    "passos": ["divida n por oito", "Barra vinte e sete:", "Barra vinte:", "No caminho contrário", "Barra dezoito"]
+   },
+   "paradas": [
+    {
+     "id": "p2-conversoes",
+     "resumo": "Converter /26 e 255.255.248.0",
+     "tipo": "campos",
+     "pergunta": "Converta as duas máscaras.",
+     "campos": [
+      {"rotulo": "/26 em decimal", "resposta": "255.255.255.192", "tipo": "ip"},
+      {"rotulo": "255.255.248.0 em /n", "resposta": "21", "tipo": "cidr"}
+     ],
+     "explicacao": "26 = 3 × 8 + 2: três octetos 255 e o segundo degrau, 192. E 255.255.248.0 = 8 + 8 + 5 + 0 = /21, porque 248 é o quinto degrau (11111000).",
+     "dica": "Divida por oito: o quociente diz quantos 255, o resto diz o degrau (1 = 128, 2 = 192, 3 = 224, 4 = 240, 5 = 248, 6 = 252, 7 = 254).",
+     "cena": "cena-04"
+    }
+   ]
+  },
+  {
+   "id": "cena-05",
+   "titulo": "Máscaras que a interface recusa",
+   "narracao": "Duas armadilhas derrubam você na hora. A primeira é a máscara que quebra a regra de forma. Duzentos e cinquenta e cinco ponto duzentos e cinquenta e cinco ponto zero ponto duzentos e cinquenta e cinco tem uns depois de zeros. A interface responde invalid netmask e nem chega a testar o resto. O mesmo vale para um octeto fora da escada, como duzentos e cinquenta. A segunda armadilha é mais sutil: uma máscara válida, mas grande demais. Barra trinta e um e barra trinta e dois deixam um ou nenhum bit de host, e no simulador isso não deixa nenhum IP utilizável. O porquê fica para a próxima aula. Por enquanto, guarde: numa interface do NetPractice, a máscara vai no máximo até barra trinta.",
+   "visual": {
+    "descricao": "255.255.0.255 em bits, com os uns depois dos zeros marcados; 250 em bits com o buraco marcado; /31 e /32 riscados; a régua termina em /30.",
+    "passos": ["quebra a regra de forma", "invalid netmask", "fora da escada", "grande demais", "no máximo até barra trinta"]
+   },
+   "paradas": [
+    {
+     "id": "p3-mascara-invalida",
+     "resumo": "Reconhecer máscara inválida",
+     "tipo": "escolha",
+     "pergunta": "Qual destas máscaras a interface recusa como <em>invalid netmask</em>?",
+     "opcoes": ["255.255.192.0", "255.255.0.255", "255.254.0.0", "255.255.255.248"],
+     "correta": 1,
+     "porque": [
+      "255.255.192.0 é /18: uns juntos à esquerda, zeros à direita. Válida.",
+      "255.255.0.255 tem oito uns depois de oito zeros. Os uns não estão todos juntos à esquerda.",
+      "255.254.0.0 é /15: 254 é o sétimo degrau da escada. Válida.",
+      "255.255.255.248 é /29: 248 é o quinto degrau da escada. Válida."
+     ],
+     "explicacao": "A máscara só vale se, lida em bits da esquerda para a direita, tiver todos os uns antes de todos os zeros.",
+     "cena": "cena-05"
+    },
+    {
+     "id": "p4-montar-29",
+     "resumo": "Montar o último octeto de /29",
+     "tipo": "bits",
+     "n": 8,
+     "modo": "mascara",
+     "alvo": "11111000",
+     "mostrarDecimal": false,
+     "pergunta": "A máscara /29 é 255.255.255.? Ligue os bits do <strong>último octeto</strong>. Azul é rede, laranja é host.",
+     "explicacao": "29 = 3 × 8 + 5: três octetos 255 e cinco uns no último, 11111000 = 248. Sobram 3 bits de host.",
+     "dica": "Quantos uns sobram depois dos três octetos inteiros? 29 menos 24.",
+     "cena": "cena-04"
+    }
+   ]
+  },
+  {
+   "id": "cena-06",
+   "titulo": "Fechamento",
+   "narracao": "Recapitulando. A máscara tem trinta e dois bits: os uns à esquerda marcam a rede, e os zeros à direita marcam o host. O número depois da barra conta os uns, e trinta e dois menos esse número dá os bits de host. Para converter, divida por oito: octetos inteiros de duzentos e cinquenta e cinco, um degrau da escada, e zeros. Abaixo do vídeo tem uma tabela para imprimir com as máscaras, a mesma ideia daquela que você lembrava. Na próxima aula, a máscara entra em ação: você vai achar o endereço de rede, o broadcast e a faixa de IPs utilizáveis. Se ficou alguma dúvida, me chama no chat.",
+   "visual": {
+    "descricao": "Os três pontos do resumo aparecem um a um.",
+    "passos": ["trinta e dois bits", "conta os uns", "divida por oito"]
+   },
+   "paradas": []
+  }
+ ]
+}

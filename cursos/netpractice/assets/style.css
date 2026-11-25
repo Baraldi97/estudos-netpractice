@@ -175,6 +175,21 @@ button.bit { padding: 0; min-width: 0; }
 .lista-aulas .num { font-family: var(--mono); color: var(--muted); font-size: .9rem; padding-top: .2rem; }
 .lista-aulas .futura { color: var(--muted); }
 
+/* Colunas de octeto (bits.js): IP em cima, máscara embaixo */
+.colunas { display: flex; flex-wrap: wrap; gap: .8rem 1.1rem; font-family: var(--mono); align-items: flex-start; }
+.colunas .col { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.colunas .col .dec { font-size: 1.05rem; height: 1.7rem; line-height: 1.7rem; }
+.colunas .col-rotulos { display: flex; flex-direction: column; gap: 3px; font-family: var(--serif); font-style: italic; color: var(--muted); font-size: .9rem; }
+.colunas .col-rotulos span { height: 2rem; display: flex; align-items: center; }
+.colunas .col-rotulos span.esp { height: 1.7rem; }
+@media (max-width: 560px) { .colunas .col-rotulos { display: none; } .colunas .col-rotulos span { height: 1.6rem; } }
+.bit.destaque { outline: 2px solid var(--fg); outline-offset: -2px; }
+.bit.alerta { outline: 2px solid var(--erro); outline-offset: -2px; }
+.aparece { opacity: 0; transform: translateY(4px); transition: opacity .4s, transform .4s; }
+.aparece.on { opacity: 1; transform: none; }
+.legenda-cores { font-size: .9rem; color: var(--muted); }
+.legenda-cores .r, .legenda-cores .h { font-weight: 600; }
+
 /* NetSim */
 .netsim { margin: .5rem 0 1rem; }
 .netsim svg { width: 100%; height: auto; max-height: 22rem; display: block; }
