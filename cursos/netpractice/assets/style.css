@@ -1,0 +1,203 @@
+/* NetPractice: estilo base do curso (aulas, referências, treino).
+   Cor só com significado. As cores de bit de rede e de host são fixas
+   em todas as aulas: --rede e --host. */
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap");
+
+:root {
+  --bg: #fffff8;
+  --bg-2: #f6f5ec;
+  --fg: #151515;
+  --muted: #666;
+  --rule: #d9d8cf;
+  --rede: #1d5c8c;      /* bits e partes de rede */
+  --rede-bg: #dce9f4;
+  --host: #b0601a;      /* bits e partes de host */
+  --host-bg: #f7e6d3;
+  --ok: #2e7d32;
+  --erro: #b3261e;
+  --foco: #1d5c8c;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --medida: 42rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151515; --bg-2: #1f1f1d; --fg: #e9e7df; --muted: #a09e96; --rule: #3a3936;
+    --rede: #7db3e0; --rede-bg: #1c3347; --host: #e6a462; --host-bg: #43301c;
+    --ok: #81c784; --erro: #f28b82; --foco: #7db3e0; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151515; --bg-2: #1f1f1d; --fg: #e9e7df; --muted: #a09e96; --rule: #3a3936;
+  --rede: #7db3e0; --rede-bg: #1c3347; --host: #e6a462; --host-bg: #43301c;
+  --ok: #81c784; --erro: #f28b82; --foco: #7db3e0; color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 1.125rem; line-height: 1.55;
+}
+main, .pagina { max-width: 60rem; margin: 0 auto; padding: 1.5rem 16px 4rem; }
+.texto { max-width: var(--medida); }
+h1, h2, h3 { font-weight: 400; line-height: 1.2; }
+h1 { font-size: 2.1rem; margin: 1.2rem 0 .3rem; }
+h2 { font-size: 1.5rem; margin: 2.4rem 0 .6rem; font-style: italic; }
+h3 { font-size: 1.2rem; margin: 1.6rem 0 .4rem; }
+p, ul, ol { max-width: var(--medida); }
+a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 2px; }
+a:hover { text-decoration-color: var(--fg); }
+code, .mono { font-family: var(--mono); font-size: .9em; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
+.sub { color: var(--muted); font-style: italic; margin-top: 0; }
+.nota { color: var(--muted); font-size: .95rem; }
+:focus-visible { outline: 2px solid var(--foco); outline-offset: 2px; }
+
+/* Semântica fixa de cor */
+.rede { color: var(--rede); }
+.host { color: var(--host); }
+.ok { color: var(--ok); }
+.erro { color: var(--erro); }
+
+/* Barra superior */
+.topo { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  font-size: .95rem; color: var(--muted); flex-wrap: wrap; }
+.topo a { color: var(--muted); }
+
+/* Botões e campos */
+button, .botao, select, input {
+  font: inherit; font-size: 1rem; color: var(--fg);
+}
+button, .botao {
+  background: transparent; border: 1px solid var(--rule); border-radius: 4px;
+  padding: .35rem .8rem; cursor: pointer; text-decoration: none; display: inline-block;
+}
+button:hover, .botao:hover { border-color: var(--fg); }
+button[disabled] { opacity: .4; cursor: default; }
+button.primario { border-color: var(--fg); }
+input[type="text"], input[type="number"], select {
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: .3rem .5rem;
+}
+input.mono { font-family: var(--mono); }
+input.certo { border-color: var(--ok); }
+input.errado { border-color: var(--erro); }
+
+/* ---------- Player ---------- */
+.player { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 1.5rem 0; }
+.palco { position: relative; min-height: 22rem; padding: 1.2rem 0 1rem; display: flex; flex-direction: column; }
+.palco .cena-titulo { font-style: italic; color: var(--muted); font-size: 1rem; margin: 0 0 .8rem; }
+.palco .visual { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 14rem; }
+.palco .visual[hidden] { display: none; }
+.legenda { min-height: 3.4em; margin-top: 1rem; font-size: 1.05rem; line-height: 1.5; max-width: var(--medida); }
+.legenda[hidden] { display: none; }
+.legenda .w { transition: color .1s; color: var(--muted); }
+.legenda .w.dita { color: var(--fg); }
+.legenda .w.agora { color: var(--fg); background: var(--bg-2); box-shadow: 0 0 0 2px var(--bg-2); border-radius: 2px; }
+.capa { display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; }
+
+.controles { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .6rem 0; border-top: 1px solid var(--rule); }
+.controles button { min-width: 2.6rem; padding: .3rem .55rem; }
+.controles .tempo { font-family: var(--mono); font-size: .85rem; color: var(--muted); min-width: 6.5rem; }
+.controles .espaco { flex: 1; }
+.controles button[aria-pressed="false"] { color: var(--muted); }
+.barra { position: relative; height: 1.6rem; cursor: pointer; flex-basis: 100%; touch-action: none; }
+.barra .trilho { position: absolute; left: 0; right: 0; top: .7rem; height: 3px; background: var(--rule); }
+.barra .feito { position: absolute; left: 0; top: .7rem; height: 3px; background: var(--fg); width: 0; }
+.barra .marca { position: absolute; top: .35rem; width: 1px; height: 1rem; background: var(--muted); }
+.barra .marca span { position: absolute; top: -1.1rem; left: 2px; font-size: .7rem; color: var(--muted); white-space: nowrap; display: none; }
+.barra .marca:hover span { display: block; }
+.barra .cabeca { position: absolute; top: .45rem; width: .8rem; height: .8rem; margin-left: -.4rem; border-radius: 50%; background: var(--fg); }
+.aviso-voz { font-size: .9rem; color: var(--muted); margin: .4rem 0 0; }
+
+/* Paradas */
+.parada { max-width: var(--medida); }
+.parada .rotulo { font-style: italic; color: var(--muted); font-size: .95rem; margin: 0 0 .4rem; }
+.parada .pergunta { margin: 0 0 1rem; }
+.opcoes { display: grid; gap: .5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.opcoes button { width: 100%; text-align: left; padding: .55rem .8rem; }
+.opcoes button.marcada-certa { border-color: var(--ok); color: var(--ok); }
+.opcoes button.marcada-errada { border-color: var(--erro); color: var(--erro); }
+.campos { display: grid; gap: .6rem; margin: 0 0 1rem; }
+.campos label { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.campos label span { min-width: 9rem; }
+.feedback { border-left: 3px solid var(--rule); padding: .4rem 0 .4rem .9rem; margin: .8rem 0; }
+.feedback.certo { border-color: var(--ok); }
+.feedback.errado { border-color: var(--erro); }
+.feedback strong { font-weight: 600; }
+.acoes { display: flex; gap: .5rem; flex-wrap: wrap; }
+table.dados { border-collapse: collapse; font-family: var(--mono); font-size: .9rem; margin: .5rem 0 1rem; }
+table.dados th, table.dados td { padding: .3rem .8rem; border-bottom: 1px solid var(--rule); text-align: left; }
+table.dados th { font-family: var(--serif); font-weight: 400; font-style: italic; color: var(--muted); }
+table.dados tr.clicavel { cursor: pointer; }
+table.dados tr.clicavel:hover td { background: var(--bg-2); }
+
+/* Bits */
+.bits { display: flex; flex-wrap: wrap; gap: .25rem .9rem; font-family: var(--mono); }
+.octeto { display: flex; flex-direction: column; align-items: center; gap: .2rem; }
+.octeto .linha { display: flex; gap: 2px; }
+.bit { width: 1.55rem; height: 2rem; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--rule); border-radius: 3px; font-size: 1rem; transition: background .3s, color .3s, border-color .3s; }
+button.bit { padding: 0; min-width: 0; }
+.bit.r { color: var(--rede); background: var(--rede-bg); border-color: transparent; }
+.bit.h { color: var(--host); background: var(--host-bg); border-color: transparent; }
+.bit.um { font-weight: 600; }
+.bit.zero { color: var(--muted); }
+.peso { font-size: .7rem; color: var(--muted); width: 1.55rem; text-align: center; }
+.octeto .dec { font-size: 1.1rem; }
+.ponto { align-self: center; font-size: 1.4rem; color: var(--muted); }
+@media (max-width: 560px) {
+  .bit { width: 1.15rem; height: 1.6rem; font-size: .85rem; }
+  .peso { width: 1.15rem; font-size: .55rem; }
+  .bits { gap: .25rem .5rem; }
+}
+
+/* Painel final */
+.painel ol { padding-left: 1.2rem; }
+.painel li { margin: .2rem 0; }
+
+/* Transcrição */
+.transcricao h3 { cursor: pointer; }
+.transcricao h3:hover { text-decoration: underline; text-decoration-color: var(--muted); }
+.transcricao .atual h3 { font-style: italic; }
+.transcricao p { color: var(--fg); }
+
+/* Fechamento */
+.resumo li { margin: .3rem 0; }
+.cartao { border-left: 3px solid var(--rule); padding: .2rem 0 .2rem 1rem; margin: 1rem 0; max-width: var(--medida); }
+
+/* Índice */
+.lista-aulas { list-style: none; padding: 0; }
+.lista-aulas li { padding: .6rem 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 4rem 1fr; gap: .5rem; }
+.lista-aulas .num { font-family: var(--mono); color: var(--muted); font-size: .9rem; padding-top: .2rem; }
+.lista-aulas .futura { color: var(--muted); }
+
+/* NetSim */
+.netsim { margin: .5rem 0 1rem; }
+.netsim svg { width: 100%; height: auto; max-height: 22rem; display: block; }
+.netsim svg .link { stroke: var(--fg); stroke-width: 2; }
+.netsim svg .no circle, .netsim svg .no rect { fill: var(--bg); stroke: var(--fg); stroke-width: 1.5; }
+.netsim svg text { fill: var(--fg); font-family: var(--serif); font-size: 13px; }
+.netsim svg text.ip { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+.netsim .nos { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .8rem; margin: .6rem 0; }
+.netsim .no-card { border: 1px solid var(--rule); border-radius: 4px; padding: .5rem .7rem; font-size: .95rem; }
+.netsim .no-card h4 { margin: 0 0 .3rem; font-weight: 400; }
+.netsim .no-card h4 i { color: var(--muted); }
+.netsim .itf { display: grid; grid-template-columns: auto 1fr; gap: .2rem .5rem; align-items: center; margin: .3rem 0 .5rem; }
+.netsim .itf input, .netsim .rota input { width: 100%; font-family: var(--mono); font-size: .9rem; padding: .2rem .35rem; }
+.netsim input[disabled] { color: var(--muted); background: var(--bg-2); }
+.netsim .rota { display: grid; grid-template-columns: 1fr auto 1fr; gap: .3rem; align-items: center; margin: .2rem 0; }
+.netsim .objetivos { list-style: none; padding: 0; margin: .4rem 0; }
+.netsim .objetivos li { margin: .2rem 0; }
+.netsim .log { font-family: var(--mono); font-size: .8rem; color: var(--muted); max-height: 12rem; overflow: auto; white-space: pre-wrap;
+  border-top: 1px solid var(--rule); padding-top: .4rem; margin-top: .4rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media print {
+  :root { --bg: #fff; }
+  .controles, .acoes, button { display: none !important; }
+  body { font-size: 11pt; }
+}

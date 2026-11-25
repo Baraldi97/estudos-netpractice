@@ -1,0 +1,1 @@
+Nesta aula, o host precisa falar com uma máquina de outra rede. Ele entrega o pacote ao gateway, que consulta a tabela de rotas e escolhe o next hop. O endereço cento e noventa e dois ponto cento e sessenta e oito ponto um ponto dez, com máscara barra vinte e quatro, tem vinte e quatro bits de rede e oito de host.
