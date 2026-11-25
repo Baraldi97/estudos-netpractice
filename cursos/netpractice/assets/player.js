@@ -62,7 +62,7 @@
     audio.preload = "auto";
     var falaVoz = null, relogio = null, relogioT0 = 0, relogioBase = 0;
     var velocidade = 1, legendaOn = ls("get", "np-legenda") !== false;
-    var chave, resultados = {}, emParada = false;
+    var chave, resultados = {}, emParada = false, buscaPendente = null;
 
     // ---------- Estrutura ----------
     var palco = el("div", { class: "palco" });
@@ -77,9 +77,9 @@
     var bNext = el("button", { type: "button", "aria-label": "Próxima cena (seta direita)", title: "Próxima cena (→)", text: "⏭" });
     var tempo = el("span", { class: "tempo", text: "0:00 / 0:00" });
     var selVel = el("select", { "aria-label": "Velocidade" });
-    [0.75, 1, 1.25, 1.5].forEach(function (v) { var o = el("option", { value: v, text: v + "x" }); if (v === 1) o.selected = true; selVel.appendChild(o); });
+    [0.75, 1, 1.25, 1.5, 1.75, 2].forEach(function (v) { var o = el("option", { value: v, text: v + "x" }); if (v === 1) o.selected = true; selVel.appendChild(o); });
     var bCC = el("button", { type: "button", title: "Legenda (C)", text: "CC" });
-    var bTema = el("button", { type: "button", title: "Tema claro ou escuro", "aria-label": "Alternar tema", text: "◐" });
+    var bTema = el("button", { type: "button", title: "Tema claro ou escuro", "aria-label": "Alternar tema claro ou escuro", text: "tema" });
     var barra = el("div", { class: "barra", role: "slider", "aria-label": "Posição na aula", tabindex: "0" });
     var trilho = el("div", { class: "trilho" }), feito = el("div", { class: "feito" }), cabeca = el("div", { class: "cabeca" });
     barra.appendChild(trilho); barra.appendChild(feito); barra.appendChild(cabeca);
@@ -172,7 +172,12 @@
       t = Math.max(0, Math.min(t || 0, c.dur - 0.05));
       if (modoAtual === "mp3") {
         if (audio.getAttribute("data-src") !== c.audio) { audio.src = c.audio; audio.setAttribute("data-src", c.audio); }
-        var aplicar = function () { try { audio.currentTime = t; } catch (e) {} audio.playbackRate = velocidade; };
+        buscaPendente = t;
+        var aplicar = function () {
+          try { audio.currentTime = t; } catch (e) {}
+          audio.playbackRate = velocidade;
+          if (!t) buscaPendente = null;
+        };
         if (audio.readyState >= 1) aplicar(); else audio.addEventListener("loadedmetadata", aplicar, { once: true });
         posChar = charNoTempo(t);
       } else {
@@ -242,8 +247,10 @@
       bPlay.setAttribute("aria-label", v ? "Pausar (espaço)" : "Tocar (espaço)");
     }
 
+    audio.addEventListener("seeked", function () { buscaPendente = null; });
+    audio.addEventListener("playing", function () { buscaPendente = null; });
     audio.addEventListener("timeupdate", function () {
-      if (modoAtual !== "mp3") return;
+      if (modoAtual !== "mp3" || buscaPendente !== null) return;
       posChar = charNoTempo(audio.currentTime);
       atualizarPasso(); desenharLegenda(); atualizarTempo(audio.currentTime);
       if (Math.random() < 0.1) salvarPos(audio.currentTime);

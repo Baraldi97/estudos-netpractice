@@ -20,5 +20,8 @@ Aulas (numeração do mapa do curso):
 
 A defesa sorteia 3 níveis entre 6 e 10 (aba Evaluation da interface), com 15 minutos no total. Por isso as aulas 7 a 12 são o centro do curso, e as aulas 1 a 5 precisam virar cálculo de cabeça rápido.
 
+## Aulas prontas e o que destravam
+- Aula 0001, binário e IPv4 (`lessons/0001-binario-e-ipv4/`): base para todos os níveis; sozinha não resolve nenhum. Junto com as aulas 2 a 4, destrava os níveis 1 e 2.
+
 ## Níveis resolvidos sozinho
 _(registrar aqui só com evidência: nível, data, tempo, se precisou de ajuda)_

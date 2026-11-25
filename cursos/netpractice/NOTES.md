@@ -42,6 +42,7 @@ Regras que o simulador aplica (e que as aulas precisam ensinar):
 - Avanço tópico a tópico; só sigo quando a aula atual está dominada (paradas acertadas de primeira).
 
 ## Voz
-- Voz escolhida: _pendente (amostras em `amostras/`)_.
-- Rate: `+0%`.
+- Voz escolhida: `pt-BR-FranciscaNeural` (Rodrigo, 2026-11-24, depois de ouvir as três amostras em `amostras/`).
+- Rate: `+0%` (ele achou a velocidade boa).
+- Player: velocidades de 0,75x a 2x, a pedido dele, para acelerar temas fáceis.
 - Rede: o edge-tts precisa do CA do proxy (o `scripts/tts.py` lê `SSL_CERT_FILE`). Testado em 2026-11-24: funciona com tempo por palavra (WordBoundary).

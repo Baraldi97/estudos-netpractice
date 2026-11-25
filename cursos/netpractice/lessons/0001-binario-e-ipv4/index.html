@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 0001: Binário e IPv4</title>
+<meta name="description" content="NetPractice, Aula 0001: ler e escrever octetos em binário de cabeça.">
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* componentes desta aula (usam só tokens do style.css) */
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 560px) { .duas { grid-template-columns: 1fr; } }
+  .itf-card { border: 1px solid var(--rule); border-radius: 4px; padding: .6rem .8rem; opacity: 0; transition: opacity .5s; }
+  .itf-card.on { opacity: 1; }
+  .itf-card .nota { margin: 0 0 .2rem; }
+  .ip-grande { font-family: var(--mono); font-size: 1.6rem; letter-spacing: .02em; }
+  @media (max-width: 560px) { .ip-grande { font-size: 1.2rem; } }
+  .pilha { display: grid; gap: .35rem; margin-top: 1rem; opacity: 0; transition: opacity .5s; }
+  .pilha.on { opacity: 1; }
+  .bit.dif { outline: 2px solid var(--fg); outline-offset: -2px; }
+  .aparece { opacity: 0; transform: translateY(4px); transition: opacity .4s, transform .4s; }
+  .aparece.on { opacity: 1; transform: none; }
+  .octs { display: flex; flex-wrap: wrap; gap: .6rem 2px; margin-top: 1rem; transition: gap .5s; }
+  .octs.grupos { gap: .6rem 1.2rem; }
+  .octs .dec { font-size: 1.15rem; opacity: 0; transition: opacity .4s; }
+  .octs.com-dec .dec { opacity: 1; }
+  .comp { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; }
+  .comp .nota { min-width: 4.5rem; }
+  .comp .pre { color: var(--muted); }
+  .riscado { color: var(--erro); text-decoration: line-through; }
+  .soma { font-family: var(--mono); font-size: 1.2rem; min-height: 1.6em; margin-top: .6rem; }
+  .bit.aceso { border-color: var(--fg); }
+  table.passos td.b { font-weight: 600; }
+  table.passos tr { opacity: 0; transition: opacity .35s; }
+  table.passos tr.on, table.passos tr.cab { opacity: 1; }
+  .escada { display: grid; gap: .25rem; font-family: var(--mono); }
+  .degrau { display: grid; grid-template-columns: max-content 3.2rem 4.5rem; justify-content: start; gap: .8rem; align-items: center; }
+  .degrau .inc { color: var(--muted); font-size: .9rem; opacity: 0; transition: opacity .4s; }
+  .escada.incs .degrau .inc { opacity: 1; }
+  .resumo-anim li { margin: .6rem 0; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="topo"><a href="../../../../index.html">NetPractice · início</a><span>Aula 0001 · cerca de 4 min</span></nav>
+  <h1>Binário e IPv4</h1>
+  <p class="sub">Ler e escrever um octeto em binário de cabeça, sem calculadora.</p>
+
+  <section class="player" id="player" aria-label="Videoaula"></section>
+  <p class="nota">Atalhos: espaço toca ou pausa, setas trocam de cena, C liga e desliga a legenda.</p>
+
+  <h2>Seu resultado</h2>
+  <section class="painel" id="painel"></section>
+
+  <h2>Fechamento</h2>
+  <ol class="resumo">
+    <li>Um IPv4 tem 32 bits, escritos como 4 octetos em decimal, cada um de 0 a 255 (RFC 791, seção 2.3).</li>
+    <li>Binário para decimal: some os pesos 128, 64, 32, 16, 8, 4, 2, 1 onde o bit é 1. Decimal para binário: desça a régua perguntando "cabe?".</li>
+    <li>Os octetos com os uns juntos à esquerda formam a escada 128, 192, 224, 240, 248, 252, 254, 255, que você reconstrói somando o próximo peso.</li>
+  </ol>
+
+  <div class="cartao">
+    <h3>Desafio de velocidade</h3>
+    <p>Sem papel e sem calculadora, cronometrando. Meta: menos de 1 minuto para os cinco.</p>
+    <p class="mono">37 → ? &nbsp;·&nbsp; 129 → ? &nbsp;·&nbsp; 254 → ? &nbsp;·&nbsp; 01000110 → ? &nbsp;·&nbsp; 11110001 → ?</p>
+    <details><summary>Respostas</summary>
+      <p class="mono">00100101 · 10000001 · 11111110 · 70 · 241</p>
+    </details>
+    <p>Se passar de 1 minuto, refaça as cenas 3 e 4 amanhã antes da Aula 0002.</p>
+  </div>
+
+  <h3>Fonte primária</h3>
+  <p><a href="https://www.rfc-editor.org/rfc/rfc791#section-2.3">RFC 791, seção 2.3 (Addressing)</a>: a definição do endereço de 32 bits. Leitura curta; foque nos dois primeiros parágrafos. No subject, o capítulo IV (p. 6) diz por que isso importa: o projeto exige entender endereçamento TCP/IP.</p>
+
+  <h3>Links</h3>
+  <ul>
+    <li>Próxima: Aula 0002, máscara e CIDR <span class="nota">(em preparação)</span></li>
+    <li><a href="../../../../index.html">Todas as aulas</a></li>
+  </ul>
+  <p class="nota">Ficou alguma dúvida? Me pergunte no chat do projeto. Posso explicar de outro jeito ou montar mais exercícios.</p>
+
+  <h2>Transcrição</h2>
+  <section class="transcricao" id="transcricao"></section>
+</main>
+
+<script src="../../assets/netsim.js"></script>
+<script src="../../assets/voice.js"></script>
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/player.js"></script>
+<script>
+(function () {
+  "use strict";
+  var PESOS = [128, 64, 32, 16, 8, 4, 2, 1];
+  function bin8(n) { return ("00000000" + n.toString(2)).slice(-8); }
+  function cel(b, extra) { return "<span class='bit " + (b === "1" ? "um" : "zero") + (extra ? " " + extra : "") + "'>" + b + "</span>"; }
+  function octeto(bits, op) {
+    op = op || {};
+    var h = "<div class='octeto'>";
+    if (op.pesos) h += "<div class='linha'>" + PESOS.map(function (p) { return "<span class='peso'>" + p + "</span>"; }).join("") + "</div>";
+    h += "<div class='linha'>" + bits.split("").map(function (b, i) { return cel(b, op.marca && op.marca(i, b)); }).join("") + "</div></div>";
+    return h;
+  }
+  function ip32(ip, op) {
+    return "<div class='bits'>" + ip.split(".").map(function (o) { return octeto(bin8(+o), op); }).join("<span class='ponto'>.</span>") + "</div>";
+  }
+
+  var visuais = {
+    "cena-01": {
+      montar: function (el) {
+        var a = 130, b = 190, ba = bin8(a), bb = bin8(b);
+        function linha(nome, v, mine, outro) {
+          return "<div class='comp'><span class='nota'>" + nome + "</span><span class='mono pre'>172.31.66.</span><div class='bits'><div class='octeto'><div class='linha'>" +
+            mine.split("").map(function (bit, i) { return cel(bit, bit !== outro[i] ? "dif" : ""); }).join("") +
+            "</div></div></div><span class='mono'>= " + v + "</span></div>";
+        }
+        el.innerHTML =
+          "<div class='duas'>" +
+          "<div class='itf-card' id='c1a'><p class='nota'>interface da esquerda</p><div class='ip-grande'>172.31.66.130</div></div>" +
+          "<div class='itf-card' id='c1b'><p class='nota'>interface da direita</p><div class='ip-grande'>172.31.66.190</div></div></div>" +
+          "<div class='pilha' id='c1p'>" + linha("esquerda", a, ba, bb) + linha("direita", b, bb, ba) +
+          "<p class='nota'>Os três primeiros octetos são iguais. No último, os bits com contorno são diferentes. Se essa diferença importa, quem decide é a máscara (Aula 0002).</p></div>";
+      },
+      passo: function (n) {
+        document.getElementById("c1a").classList.toggle("on", n >= 1);
+        document.getElementById("c1b").classList.toggle("on", n >= 2);
+        document.getElementById("c1p").classList.toggle("on", n >= 3);
+      }
+    },
+    "cena-02": {
+      montar: function (el) {
+        var ip = "172.31.66.130";
+        el.innerHTML =
+          "<div class='ip-grande aparece on' id='c2ip'>" + ip + "</div>" +
+          "<div class='octs aparece' id='c2b'>" + ip.split(".").map(function (o) {
+            return "<div class='octeto'><div class='linha'>" + bin8(+o).split("").map(function (b) { return cel(b); }).join("") + "</div><span class='dec mono'>" + o + "</span></div>";
+          }).join("") + "</div>" +
+          "<p class='aparece' id='c2r' style='margin-top:1rem'>8 bits → 2<sup>8</sup> = 256 combinações: de <span class='mono'>00000000</span> = 0 a <span class='mono'>11111111</span> = 255.</p>" +
+          "<p class='aparece ip-grande' id='c2x'>172.31.<span class='riscado'>300</span>.130 <span class='nota' style='font-family:var(--serif);font-size:1rem'>inválido</span></p>";
+      },
+      passo: function (n) {
+        var b = document.getElementById("c2b");
+        b.classList.toggle("on", n >= 1);
+        b.classList.toggle("grupos", n >= 2);
+        b.classList.toggle("com-dec", n >= 3);
+        document.getElementById("c2r").classList.toggle("on", n >= 4);
+        document.getElementById("c2x").classList.toggle("on", n >= 5);
+      }
+    },
+    "cena-03": {
+      montar: function (el) { el.innerHTML = "<div id='c3o'></div><div class='soma' id='c3s'></div>"; this.passo(0); },
+      passo: function (n) {
+        var o = document.getElementById("c3o"), s = document.getElementById("c3s");
+        var valor = n >= 5 ? 160 : 130;
+        var bits = n >= 3 ? bin8(valor) : "00000000";
+        var acende = n >= 4 && !(n === 5);
+        o.innerHTML = "<div class='bits'>" + octeto(bits, { pesos: n >= 1, marca: function (i, b) { return acende && b === "1" ? "aceso" : ""; } }) + "</div>";
+        if (n === 2) s.innerHTML = "<span class='nota'>128 = 2 × 64, 64 = 2 × 32, … 2 = 2 × 1</span>";
+        else if (n === 4) s.textContent = "128 + 2 = 130";
+        else if (n === 5) s.textContent = "10100000 = ?";
+        else if (n >= 6) s.textContent = "128 + 32 = 160";
+        else s.textContent = "";
+      }
+    },
+    "cena-04": {
+      montar: function (el) {
+        var linhas = [[128, "sim", "1", 72], [64, "sim", "1", 8], [32, "não", "0", 8], [16, "não", "0", 8], [8, "sim", "1", 0], [4, "", "0", 0], [2, "", "0", 0], [1, "", "0", 0]];
+        el.innerHTML = "<p class='ip-grande aparece' id='c4t'>200 = ?</p>" +
+          "<table class='dados passos'><tr class='cab'><th>peso</th><th>cabe?</th><th>bit</th><th>sobra</th></tr>" +
+          linhas.map(function (l, i) { return "<tr id='c4r" + i + "'><td>" + l[0] + "</td><td>" + (l[1] || "sobra 0") + "</td><td class='b'>" + l[2] + "</td><td>" + l[3] + "</td></tr>"; }).join("") +
+          "</table><div class='soma' id='c4s'></div>";
+      },
+      passo: function (n) {
+        document.getElementById("c4t").classList.toggle("on", n >= 2);
+        var vis = [n >= 3, n >= 4, n >= 5, n >= 6, n >= 7, n >= 8, n >= 8, n >= 8];
+        vis.forEach(function (v, i) { document.getElementById("c4r" + i).classList.toggle("on", v); });
+        var s = document.getElementById("c4s");
+        s.textContent = n >= 9 ? "11001000 → 128 + 64 + 8 = 200" : (n >= 8 ? "11001000" : "");
+      }
+    },
+    "cena-05": {
+      montar: function (el) {
+        var h = "<div class='escada' id='c5e'>";
+        var antes = 0;
+        for (var k = 1; k <= 8; k++) {
+          var v = 256 - Math.pow(2, 8 - k);
+          var bits = new Array(k + 1).join("1") + new Array(9 - k).join("0");
+          h += "<div class='degrau aparece' id='c5d" + k + "'>" + octeto(bits) + "<span>" + v + "</span><span class='inc'>" + (k === 1 ? "128" : "+" + (v - antes)) + "</span></div>";
+          antes = v;
+        }
+        el.innerHTML = h + "</div>";
+      },
+      passo: function (n) {
+        var mostrar = n >= 5 ? 8 : n >= 4 ? 7 : n;
+        for (var k = 1; k <= 8; k++) document.getElementById("c5d" + k).classList.toggle("on", k <= mostrar);
+        document.getElementById("c5e").classList.toggle("incs", n >= 6);
+      }
+    },
+    "cena-06": {
+      montar: function (el) {
+        el.innerHTML = "<ol class='resumo-anim'>" +
+          "<li class='aparece' id='c6a'>32 bits = 4 octetos de 0 a 255</li>" +
+          "<li class='aparece' id='c6b'>ler: somar os pesos dos bits 1</li>" +
+          "<li class='aparece' id='c6c'>escrever: descer a régua perguntando “cabe?”</li>" +
+          "<li class='aparece' id='c6d'>escada: 128, 192, 224, 240, 248, 252, 254, 255</li></ol>";
+      },
+      passo: function (n) {
+        ["c6a", "c6b", "c6c", "c6d"].forEach(function (id, i) { document.getElementById(id).classList.toggle("on", n >= i + 1); });
+      }
+    }
+  };
+
+  NP.Player.iniciar({
+    raiz: document.getElementById("player"),
+    roteiro: "roteiro.json",
+    cues: "cues.json",
+    visuais: visuais,
+    transcricao: document.getElementById("transcricao"),
+    painel: document.getElementById("painel")
+  }).then(function (api) { window.NPAula = api; });
+})();
+</script>
+</body>
+</html>

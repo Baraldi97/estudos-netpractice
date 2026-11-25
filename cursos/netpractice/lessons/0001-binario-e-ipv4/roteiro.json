@@ -1,0 +1,125 @@
+{
+ "id": "0001-binario-e-ipv4",
+ "numero": "0001",
+ "titulo": "Binário e IPv4: ler e escrever octetos de cabeça",
+ "voz": "pt-BR-FranciscaNeural",
+ "rate": "+0%",
+ "fechamento": {
+  "seguir": "Você acertou todas as paradas de primeira. Próxima: Aula 0002, máscara e CIDR.",
+  "reforcar": "Alguma parada exigiu segunda tentativa. Antes da Aula 0002, faça o desafio de velocidade abaixo e refaça esta aula se passar de um minuto."
+ },
+ "cenas": [
+  {
+   "id": "cena-01",
+   "titulo": "A pergunta que a interface faz",
+   "narracao": "Imagine um nível do NetPractice com duas máquinas ligadas por um cabo. A da esquerda tem o IP cento e setenta e dois ponto trinta e um ponto sessenta e seis ponto cento e trinta. A da direita tem cento e setenta e dois ponto trinta e um ponto sessenta e seis ponto cento e noventa. A tela quer saber se elas conseguem se comunicar. Olhando os números em decimal, não dá para ter certeza. A interface decide isso comparando bits, um por um. Por isso a primeira habilidade da defesa é ler um número em binário de cabeça, rápido e sem calculadora. É o que você vai treinar agora.",
+   "visual": {
+    "descricao": "Duas interfaces inventadas lado a lado, com IP em decimal. Na fala 'comparando bits', os 32 bits de cada IP aparecem empilhados e as posições diferentes ficam marcadas.",
+    "passos": ["A da esquerda", "A da direita", "comparando bits"]
+   },
+   "paradas": []
+  },
+  {
+   "id": "cena-02",
+   "titulo": "Trinta e dois bits em quatro octetos",
+   "narracao": "Um endereço IPv4, a versão quatro do Internet Protocol, tem trinta e dois bits. Quem define isso é a RFC setecentos e noventa e um, o documento que padroniza o protocolo. Para ficar legível, a gente quebra os trinta e dois bits em quatro grupos de oito. Cada grupo se chama octeto. Cada octeto é escrito em decimal, e os quatro são separados por pontos. Com oito bits existem duzentas e cinquenta e seis combinações, de zero a duzentos e cinquenta e cinco. Por isso nenhum octeto passa de duzentos e cinquenta e cinco. Se você digitar trezentos numa interface, o endereço é inválido antes de qualquer outra conta.",
+   "visual": {
+    "descricao": "Os 32 bits corridos do IP de exemplo; depois agrupados em quatro octetos; depois o decimal de cada octeto embaixo; a faixa de 0 a 255; um IP com 300 riscado.",
+    "passos": ["tem trinta e dois bits", "quatro grupos de oito", "escrito em decimal", "duzentas e cinquenta e seis", "trezentos"]
+   },
+   "paradas": []
+  },
+  {
+   "id": "cena-03",
+   "titulo": "Os pesos de um octeto",
+   "narracao": "Dentro do octeto, cada posição tem um peso. Da esquerda para a direita: cento e vinte e oito, sessenta e quatro, trinta e dois, dezesseis, oito, quatro, dois e um. Cada peso é o dobro do seguinte. Para ler um octeto em binário, some os pesos das posições que têm o bit um. Veja o último octeto do nosso exemplo: um, zero, zero, zero, zero, zero, um, zero. Tem bit um no peso cento e vinte e oito e no peso dois. Cento e vinte e oito mais dois dá cento e trinta. Mais um: um, zero, um, zero, zero, zero, zero, zero. Cento e vinte e oito mais trinta e dois. Cento e sessenta.",
+   "visual": {
+    "descricao": "Um octeto com a régua de pesos em cima. Os bits do 130 acendem e a soma aparece; depois o mesmo para 160.",
+    "passos": ["cada posição tem um peso", "Cada peso é o dobro", "último octeto", "Cento e vinte e oito mais dois", "Mais um", "Cento e sessenta"]
+   },
+   "paradas": [
+    {
+     "id": "p1-bin-dec",
+     "resumo": "Binário para decimal (10010110)",
+     "tipo": "campos",
+     "pergunta": "Quanto vale o octeto <code>10010110</code> em decimal?",
+     "campos": [{"rotulo": "Decimal", "resposta": "150", "tipo": "numero"}],
+     "explicacao": "Os bits 1 estão nos pesos 128, 16, 4 e 2. Somando: 128 + 16 + 4 + 2 = 150.",
+     "dica": "Escreva a régua 128 64 32 16 8 4 2 1 em cima dos bits e some só os pesos onde há 1.",
+     "cena": "cena-03"
+    }
+   ]
+  },
+  {
+   "id": "cena-04",
+   "titulo": "Do decimal para o binário",
+   "narracao": "O caminho contrário usa a mesma régua. Comece pelo maior peso e pergunte: cabe? Se cabe, o bit é um e você subtrai. Se não cabe, o bit é zero e você segue. Vamos converter duzentos. Cento e vinte e oito cabe: bit um, sobram setenta e dois. Sessenta e quatro cabe: bit um, sobram oito. Trinta e dois não cabe: zero. Dezesseis não cabe: zero. Oito cabe: bit um, sobra zero. Quando sobra zero, todos os bits restantes são zero. Resultado: um, um, zero, zero, um, zero, zero, zero. Confira somando: cento e vinte e oito, mais sessenta e quatro, mais oito. Duzentos.",
+   "visual": {
+    "descricao": "Uma tabela que se preenche linha a linha: peso, cabe?, bit, quanto sobra. No fim, o octeto 11001000 e a soma de conferência.",
+    "passos": ["Comece pelo maior peso", "Vamos converter duzentos", "Cento e vinte e oito cabe", "Sessenta e quatro cabe", "Trinta e dois não cabe", "Dezesseis não cabe", "Oito cabe", "Quando sobra zero", "Confira somando"]
+   },
+   "paradas": [
+    {
+     "id": "p2-dec-bin",
+     "resumo": "Decimal para binário (172)",
+     "tipo": "campos",
+     "pergunta": "Escreva <strong>172</strong> em binário, com os 8 bits.",
+     "campos": [{"rotulo": "Binário", "resposta": "10101100", "tipo": "binario"}],
+     "explicacao": "128 cabe (sobram 44), 64 não, 32 cabe (sobram 12), 16 não, 8 cabe (sobram 4), 4 cabe (sobra 0), 2 e 1 não. Resultado: 10101100.",
+     "dica": "Desça a régua a partir do 128: se o peso cabe no que sobrou, bit 1 e subtrai; se não cabe, bit 0. Confira se escreveu exatamente 8 bits.",
+     "cena": "cena-04"
+    }
+   ]
+  },
+  {
+   "id": "cena-05",
+   "titulo": "A escada de uns à esquerda",
+   "narracao": "Existe uma família de octetos que aparece o tempo todo no NetPractice: os que têm todos os uns juntos, começando da esquerda. Com um bit ligado, cento e vinte e oito. Com dois, cento e noventa e dois. Com três, duzentos e vinte e quatro. Depois vêm duzentos e quarenta, duzentos e quarenta e oito, duzentos e cinquenta e dois, duzentos e cinquenta e quatro, e, com os oito bits ligados, duzentos e cinquenta e cinco. Não decore como lista. Repare que cada degrau soma o próximo peso: cento e noventa e dois é cento e vinte e oito mais sessenta e quatro, e duzentos e vinte e quatro é cento e noventa e dois mais trinta e dois. Se você lembra os pesos, reconstrói a escada em segundos. Na próxima aula, você vai ver que toda máscara é feita só desses degraus.",
+   "visual": {
+    "descricao": "Uma escada de oito linhas: cada linha é um octeto com um bit 1 a mais à esquerda e o decimal ao lado. No fim, a coluna com o peso somado em cada degrau.",
+    "passos": ["Com um bit ligado", "Com dois", "Com três", "Depois vêm duzentos e quarenta", "com os oito bits ligados", "cada degrau soma o próximo peso"]
+   },
+   "paradas": [
+    {
+     "id": "p3-escada",
+     "resumo": "Reconhecer a escada (250)",
+     "tipo": "escolha",
+     "pergunta": "Qual destes octetos <strong>não</strong> tem todos os uns juntos a partir da esquerda?",
+     "opcoes": ["248", "252", "250", "240"],
+     "correta": 2,
+     "porque": [
+      "248 é 11111000: cinco uns juntos à esquerda, é um degrau da escada.",
+      "252 é 11111100: seis uns juntos à esquerda, é um degrau da escada.",
+      "250 é 11111010: depois dos cinco uns vem um zero e depois outro um. Não está na escada.",
+      "240 é 11110000: quatro uns juntos à esquerda, é um degrau da escada."
+     ],
+     "explicacao": "Os degraus são 128, 192, 224, 240, 248, 252, 254 e 255. Qualquer outro valor tem um buraco no meio dos uns.",
+     "cena": "cena-05"
+    }
+   ]
+  },
+  {
+   "id": "cena-06",
+   "titulo": "Fechamento",
+   "narracao": "Recapitulando. Um IPv4 tem trinta e dois bits, em quatro octetos de zero a duzentos e cinquenta e cinco. Para ler um octeto, some os pesos dos bits ligados. Para escrever, desça a régua de pesos perguntando se cabe. E a escada de uns à esquerda você reconstrói somando pesos. Antes de ir, um último desafio: monte o número noventa e nove ligando os bits certos. Depois, abaixo do vídeo, tem um exercício de velocidade e o link para a fonte primária. Se algo ficou obscuro, me pergunte no chat.",
+   "visual": {
+    "descricao": "Os três pontos do resumo aparecem um a um.",
+    "passos": ["trinta e dois bits", "some os pesos", "desça a régua", "escada de uns"]
+   },
+   "paradas": [
+    {
+     "id": "p4-bits-99",
+     "resumo": "Montar 99 ligando bits",
+     "tipo": "bits",
+     "n": 8,
+     "alvoDecimal": 99,
+     "mostrarDecimal": false,
+     "pergunta": "Clique nos bits para formar <strong>99</strong>. O decimal fica escondido de propósito.",
+     "explicacao": "99 = 64 + 32 + 2 + 1, então 01100011. O 128 não cabe, e é por isso que o primeiro bit é zero.",
+     "dica": "Desça a régua: 128 cabe em 99? E 64? Some os pesos que você acendeu e compare com 99.",
+     "cena": "cena-04"
+    }
+   ]
+  }
+ ]
+}
